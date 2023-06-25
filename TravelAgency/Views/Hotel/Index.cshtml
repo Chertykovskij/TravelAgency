@@ -1,0 +1,75 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+@model IEnumerable<TravelAgency.Models.Hotel>
+
+@{
+    ViewData["Title"] = "Отели";
+}
+
+<h4>Отели</h4>
+
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <p>
+        <a class="btn btn-info" asp-action="Create">Добавить</a>
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MealType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HotelStarRating)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+
+            <td>
+               @Html.DisplayFor(modelItem => item.City.Name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.MealType.Type)
+            </td> 
+            <td>
+                @Html.DisplayFor(modelItem => item.HotelStarRating.Stars)  
+            </td>
+            <td>
+                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                {
+                    <div>
+                        <a asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-arrow-counterclockwise"></i></a> |
+                        <a asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i></a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash3"></i></a>
+                    </div>
+                }
+                else if (SignInManager.IsSignedIn(User) && User.IsInRole("Manager"))
+                {
+                    <div>
+                        <a asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i></a>
+                    </div>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

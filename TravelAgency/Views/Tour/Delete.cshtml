@@ -1,0 +1,68 @@
+﻿@model TravelAgency.Models.Tour
+
+@{
+    ViewData["Title"] = "Удаление";
+}
+
+
+<h3>Вы уверены что хотите удалить эту запись?</h3>
+<div>
+    <h4>Тур</h4>
+    <hr />
+    <dl class="row">
+
+@*        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PhotoUrl)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PhotoUrl)
+        </dd>*@
+
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Price) руб.
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Duration) дн.
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Hotel)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Hotel.Name)
+        </dd>
+    </dl>
+    
+    <div class="display-label"><b>Услуги входящие в стоимость</b></div>
+    <ul>
+        @foreach (var c in Model.IncludedServices)
+        {
+            <li>@c.Name</li>
+        }
+    </ul>
+
+    <div class="display-label"><b>Услуги оплачиваемые отдельно</b></div>
+    <ul>
+        @foreach (var c in Model.NotIncludedServices)
+        {
+            <li>@c.Name</li>
+        }
+    </ul>
+
+    <form class="form-group btn-group" asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Удалить" class="btn btn-danger" />
+        <a class="btn btn-sm btn-outline-info" asp-action="Index">Вернуться к списку</a>
+    </form>
+</div>

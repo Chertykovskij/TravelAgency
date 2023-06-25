@@ -1,0 +1,141 @@
+﻿@*@model IEnumerable<TravelAgency.Models.CustomerRequest>*@
+
+@model X.PagedList.IPagedList<TravelAgency.Models.CustomerRequest>
+
+@{
+    ViewData["Title"] = "Заявки";
+    int pageSize = ViewBag.PageSize;
+}
+
+<h6>Заявки</h6>
+<div class='d-flex justify-content-end'>
+    @if (ViewBag.Count == 0)
+    {
+        <p style="color:green;"><b>Необработанные заявки отсутствуют</b></p>
+    }
+    else
+    {
+        <p style="color:red;"><b>Количество необработанных заявок: @ViewBag.Count</b></p>
+    }
+</div>
+
+<vc:pagination page-size="@pageSize" page-number="@Model.PageNumber" total-items="@Model.TotalItemCount"></vc:pagination>
+
+<table id="requests" class="table">
+    <thead>
+        <tr>
+            <th>
+                Клиент
+            </th>
+            <th>
+                Дата
+            </th>
+            <th>
+                Тур
+            </th>
+            <th>
+                Отель
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr style="background-color: @(item.Status == 0 ? "#FFA07A" : "#32CD32")">
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tour.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tour.Hotel.Name)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<vc:pagination page-size="@pageSize" page-number="@Model.PageNumber" total-items="@Model.TotalItemCount"></vc:pagination>
+
+<div class="form-group btn-group">
+    @if (Model.HasPreviousPage)
+    {
+        <div class="d-flex justify-content-center my-3">
+            <a class="btn btn-outline-secondary" 
+            asp-action="Index" asp-route-pageNumber="@(Model.PageNumber - 1)" 
+            asp-route-pageSize="@pageSize">Предыдущие</a>
+        </div>
+    }
+    @if (Model.HasNextPage)
+    {
+        <div class="d-flex justify-content-center my-3">
+            <a class="btn btn-outline-secondary" asp-action="Index" 
+            asp-route-pageNumber="@(Model.PageNumber + 1)" 
+            asp-route-pageSize="@pageSize">Следующие</a>
+        </div>
+    }
+</div>
+
+
+@*
+<h6>Заявки</h6>
+<div class='d-flex justify-content-end'>
+    @if (ViewBag.Count == 0)
+    {
+        <p style="color:green;"><b>Необработанные заявки отсутствуют</b></p>
+    }
+    else
+    {
+        <p style="color:red;"><b>Количество необработанных заявок: @ViewBag.Count</b></p>
+    }
+</div>
+
+<table id="requests" class="table">
+    <thead>
+        <tr>
+            <th>
+                Клиент
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationDate)
+            </th>
+            <th>
+                Тур
+            </th>
+            <th>
+                Отель
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            <tr style="background-color: @(item.Status == 0 ? "#FFA07A" : "#32CD32")">
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tour.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tour.Hotel.Name)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+*@

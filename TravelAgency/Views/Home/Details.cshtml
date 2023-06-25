@@ -1,0 +1,98 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model TravelAgency.Models.Tour
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+
+<section>
+    <h5>@Model.Title</h5>
+    <hr class="col-md-9"  />
+
+    <div class="row g-0">
+        
+        <div class="col-md-5">
+            <img src="~/images/@Model.PhotoUrl" width="100%" alt="@Model.Title" />
+        </div>
+        <div class="col-md-5">
+            <div class="card-body">
+                <h6 class="card-text"><b>Отель: </b>@Model.Hotel.Name</h6>
+                <p class="card-text"><b>Звёзд: </b>@Model.Hotel.HotelStarRating.Stars</p>
+                <p class="card-text"><b>Тип питания: </b>@Model.Hotel.MealType.Type</p>
+                <p class="card-text"><b>Стоимость: </b>@Model.Price руб.</p>
+                <p class="card-text"><b>Продолжительность: </b>@Model.Duration дн.</p>
+                <p class="card-text">
+                    <b>В стоимость тура включены: </b>
+                    @foreach (var c in Model.IncludedServices) 
+                    {
+                        <span style="text-transform:lowercase;">@string.Concat(c.Name,"; ")</span>
+                    }
+                </p>
+                <p class="card-text">
+                    <b>Отельно оплачивается: </b>
+                    @foreach (var c in Model.NotIncludedServices)
+                    {
+                        <span style="text-transform:lowercase;">@string.Concat(c.Name,"; ")</span>
+                    }
+                </p>
+            </div>
+        </div>
+        <p></p>
+        <div class="col-md-7">
+
+            <table width="100%" cellspacing="0" cellpadding="5">
+                <tr>
+                    <td valign="top"><b>Услуги отеля</b></td>
+                    <td valign="top"><b>Оснащение номера</b></td>
+                </tr>
+                <tr>
+                    <td>
+                        <ul>
+                            @foreach (var c in Model.Hotel.HotelFacility)
+                            {
+                                <li>@c.Name</li>
+                            }
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            @foreach (var c in Model.Hotel.RoomAmenity)
+                            {
+                                <li>@c.Name</li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+
+            
+        </div>
+        <div class="col-md-12">
+            <div class="card-footer">
+                <p class="card-text">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <div class="form-group btn-group">                            
+                            <a class="btn btn-sm btn-outline-info" asp-action="Index">Вернуться к списку</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group btn-group">
+                            <a class="btn btn-info" asp-action="AddRequest" asp-route-id="@Model?.Id">Уточнить даты тура</a>
+                            <a class="btn btn-sm btn-outline-info" asp-action="Index">Вернуться к списку</a>
+                        </div>
+                    }
+                </p>
+            </div>
+        </div>
+    </div>
+
+</section>
+

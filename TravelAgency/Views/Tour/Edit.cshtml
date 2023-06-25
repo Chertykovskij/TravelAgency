@@ -1,0 +1,124 @@
+﻿@model TravelAgency.Models.Tour
+
+@{
+    ViewData["Title"] = "Редактирование";
+}
+
+
+<h4>Тур</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            
+
+            <div class="col-4 row">
+                <div class="form-group col-12 justify-content-center align-middle mb-0 pb-0">
+                    <img id="PreviewPhoto" src="~/images/@Model.PhotoUrl" alt="Logo Images"
+                         width="400" height="300" style="border:1px; margin-top:30px; ">
+                </div>
+
+                <input type="hidden" asp-for="PhotoUrl" />
+
+                <div class="form-group col-10 pt-0 mt-0">
+                    <div class="custom-file">
+                        <input asp-for="TourPhoto" class="custom-file-input" id="customFile"
+                               onchange="document.getElementById('PreviewPhoto').src
+                                        = window.URL.createObjectURL(this.files[0])" />
+                        <label class="custom-file-lable" for="customFile">@Model.PhotoUrl</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-5">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-2">
+                <label asp-for="Price" class="control-label"></label> в рублях
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-2">
+                <label asp-for="Duration" class="control-label"></label> в днях
+                <input asp-for="Duration" class="form-control" />
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-5">
+                <label asp-for="HotelId" class="control-label"></label>
+                <select asp-for="HotelId" class="form-control" asp-items="ViewBag.Hotel"></select>
+            </div>
+
+
+            <p></p>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Услуги входящие в стоимость тура
+                        </th>
+                        <th>
+                            Услуги оплачивыемые отдельно
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @foreach (var service in ViewBag.IncludedServices)
+                            {
+                                <input type="checkbox" name="includedServices" value="@service.Id"
+                                @(Model.IncludedServices.Contains(service) ? "checked=\"checked\"" : "")
+                                       data-not-included-id="@service.Id" />
+                                @service.Name <br />
+                            }
+                        </td>
+
+                        <td>
+                            @foreach (var r in ViewBag.NotIncludedServices)
+                            {
+                                <input type="checkbox" name="notIncludedServices" value="@r.Id"
+                                @(Model.NotIncludedServices.Contains(r) ? "checked=\"checked\"" : "")
+                                       data-included-id="@r.Id" />
+                                @r.Name <br />
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            <div class="form-group btn-group">
+                <input type="submit" value="Сохранить" class="btn btn-info" />
+                <a class="btn btn-sm btn-outline-info" asp-action="Index">Вернуться к списку</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @*Скрипт чтобы невозможно было выбрать услугу турагенства
+    во включенных в тур и оплачиваемых отдельно*@
+    <script>
+        $(function () {
+            $('input[name="includedServices"]').change(function () {
+                var excludedId = $(this).data('not-included-id');
+                $('input[name="notIncludedServices"][value="' + excludedId + '"]').prop('checked', false);
+            });
+
+            $('input[name="notIncludedServices"]').change(function () {
+                var includedId = $(this).data('included-id');
+                $('input[name="includedServices"][value="' + includedId + '"]').prop('checked', false);
+            });
+        });
+    </script>
+    
+}

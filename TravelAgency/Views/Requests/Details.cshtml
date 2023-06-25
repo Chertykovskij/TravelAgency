@@ -1,0 +1,80 @@
+﻿@model TravelAgency.Models.CustomerRequest
+
+@{
+    ViewData["Title"] = "Отработка заявки";
+}
+
+<div>
+    <h6>Заявка от @Model.ApplicationDate</h6>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-3">
+            Клиент
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.CustomerName)
+        </dd>
+        <dt class = "col-sm-3">
+            Номер телефона
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.PhoneName)
+        </dd>        
+        <dt class = "col-sm-3">
+            Тур
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.Tour.Title)
+        </dd>
+        <dt class="col-sm-3">
+            Продолжительность
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Tour.Duration) дн.
+        </dd>
+        <dt class="col-sm-3">
+            Стоимость
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Tour.Price) руб.
+        </dd>
+        <dt class = "col-sm-3">
+            Отель
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.Tour.Hotel.Name)
+        </dd>
+        <dt class="col-sm-3">
+            Звёзд
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Tour.Hotel.HotelStarRating.Stars)
+        </dd>
+        <dt class="col-sm-3">
+            Тип питания
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Tour.Hotel.MealType.Type)
+        </dd>
+    </dl>
+    <div class="display-label"><b>Услуги входящие в стоимость</b></div>
+    <ul>
+        @foreach (var c in Model.Tour.IncludedServices)
+        {
+            <li>@c.Name</li>
+        }
+    </ul>
+
+    <div class="display-label"><b>Услуги оплачиваемые отдельно</b></div>
+    <ul>
+        @foreach (var c in Model.Tour.NotIncludedServices)
+        {
+            <li>@c.Name</li>
+        }
+    </ul>
+</div>
+<div class="form-group btn-group">
+    <a class="btn btn-info" asp-action="Edit" asp-route-id="@Model?.Id">Обработно</a>
+    <a class="btn btn-sm btn-outline-info" asp-action="Index">Вернуться к списку</a>
+</div>
+

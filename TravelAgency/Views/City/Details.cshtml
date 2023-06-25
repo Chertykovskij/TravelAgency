@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model TravelAgency.Models.City
+
+@{
+    ViewData["Title"] = "Детализация";
+}
+
+
+<div>
+    <h4>Населенный пункт</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+</div>
+<hr />
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <div class="form-group btn-group">
+        <a class="btn btn-info" asp-action="Edit" asp-route-id="@Model?.Id">Редактировать</a>
+        <a class="btn btn-sm btn-outline-info" asp-action="Index">Вернуться к списку</a>
+    </div>
+}
+else if (SignInManager.IsSignedIn(User) && User.IsInRole("Manager"))
+{
+    <div class="form-group btn-group">
+        <a class="btn btn-sm btn-outline-info" asp-action="Index">Вернуться к списку</a>
+    </div>
+}

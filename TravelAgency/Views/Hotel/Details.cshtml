@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model TravelAgency.Models.Hotel
+
+@{
+    ViewData["Title"] = "Просмотр";
+}
+
+<div>
+    <h4>Отель</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.City.Name)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.HotelStarRating)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.HotelStarRating.Stars)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.MealType)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.MealType.Type)
+        </dd>
+        
+    </dl>
+
+    <div class="display-label"><b>Услуги отеля</b></div>
+    <ul>
+        @foreach (var c in Model.HotelFacility)
+        {
+            <li>@c.Name</li>
+        }
+    </ul>
+
+    <div class="display-label"><b>Оснащение номера</b></div>
+    <ul>
+        @foreach (var c in Model.RoomAmenity)
+        {
+            <li>@c.Name</li>
+        }
+    </ul>
+
+</div>
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <div class="form-group btn-group">
+        <a class="btn btn-info" asp-action="Edit" asp-route-id="@Model?.Id">Редактировать</a>
+        <a class="btn btn-sm btn-outline-info" asp-action="Index">Вернуться к списку</a>
+    </div>
+}
+else if (SignInManager.IsSignedIn(User) && User.IsInRole("Manager"))
+{
+    <div class="form-group btn-group">
+        <a class="btn btn-sm btn-outline-info" asp-action="Index">Вернуться к списку</a>
+    </div>
+}

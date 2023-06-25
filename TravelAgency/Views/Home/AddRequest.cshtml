@@ -1,0 +1,38 @@
+﻿@model TravelAgency.Models.CustomerRequest
+
+@{
+    ViewData["Title"] = "Заявка";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<section>
+    <h4>Уточнить даты тура</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="AddRequest">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="CustomerName" class="control-label"></label>
+                    <input asp-for="CustomerName" class="form-control" />
+                    <span asp-validation-for="CustomerName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneName" class="control-label"></label>
+                    <input placeholder="89XXXXXXXXX" asp-for="PhoneName" class="form-control" />
+                    <span asp-validation-for="PhoneName" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group btn-group">
+                    <input type="submit" value="Отправить" class="btn btn-info" />
+                    <a class="btn btn-sm btn-outline-info" asp-action="Index">Вернуться к списку</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

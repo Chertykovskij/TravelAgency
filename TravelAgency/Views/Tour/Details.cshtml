@@ -1,0 +1,78 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model TravelAgency.Models.Tour
+
+@{
+    ViewData["Title"] = "Просмотр";
+}
+
+
+<div>
+    <h4>Тур</h4>
+    <hr />
+    <div class="form-group col-12 justify-content-center align-middle mb-0 pb-0">
+        <img id="PreviewPhoto" src="~/images/@Model.PhotoUrl" alt="Logo Images"
+             width="400" height="300" style="border:1px; margin-top:30px; ">
+    </div>
+    <p></p>
+    <dl class="row">      
+
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Price) руб.
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Duration) 
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Duration) дн.
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Hotel)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Hotel.Name)
+        </dd>
+    </dl>
+
+    <div class="display-label"><b>Услуги входящие в стоимость</b></div>
+    <ul>
+        @foreach (var c in Model.IncludedServices)
+        {
+            <li>@c.Name</li>
+        }
+    </ul>
+
+    <div class="display-label"><b>Услуги оплачиваемые отдельно</b></div>
+    <ul>
+        @foreach (var c in Model.NotIncludedServices)
+        {
+            <li>@c.Name</li>
+        }
+    </ul>
+
+</div>
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <div class="form-group btn-group">
+        <a class="btn btn-info" asp-action="Edit" asp-route-id="@Model?.Id">Редактировать</a>
+        <a class="btn btn-sm btn-outline-info" asp-action="Index">Вернуться к списку</a>
+    </div>
+}
+else if (SignInManager.IsSignedIn(User) && User.IsInRole("Manager"))
+{
+    <div class="form-group btn-group">
+        <a class="btn btn-sm btn-outline-info" asp-action="Index">Вернуться к списку</a>
+    </div>
+}

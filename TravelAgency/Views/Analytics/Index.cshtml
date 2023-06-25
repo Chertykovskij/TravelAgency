@@ -1,0 +1,44 @@
+﻿@model List<TravelAgency.Analystics.ClusteredAnalyticsViewModel>
+
+<h6> 
+    &nbsp;&nbsp;&nbsp;&nbsp;В данном разделе предствалены туры и количество обращений по каждому из них, разбитые на
+    три группы. Каждая группа включает в себя туры максимально приближенные по цене, 
+    продолжительности, количеству звёзд отеля и типу питания. 
+</h6>
+<p>
+    &nbsp;&nbsp;&nbsp;&nbsp;Данный раздел предназначен для анализа востребованности каждой группы
+    туров в целом и отдельных туров, в входящих в группу, в частности.
+</p>
+
+@foreach (var cluster in Model)
+{
+    <h2 style="color: @cluster.Color">Группа @cluster.Cluster</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Тур</th>
+                <th>Цена</th>
+                <th>Дней</th>
+                <th>Отель</th>
+                <th>Звёзд</th>
+                <th>Питание</th>
+                <th>Заявок</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tour in cluster.Tours)
+            {
+                <tr>
+                    <td>@tour.NameTour</td>
+                    <td>@tour.PriceTour</td>
+                    <td>@tour.DurationTour</td>
+                    <td>@tour.NameHotel</td>
+                    <td>@tour.StarRating</td>
+                    <td>@tour.MealTypeString</td>
+                    <td>@tour.Count</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

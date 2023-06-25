@@ -1,0 +1,206 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/TravelAgency.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+
+
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+        
+        <header>
+            <i class="bi bi-airplane-engines"></i> ТА "Родина"
+            <form name="search" action="#" method="get">
+                <input type="text" name="q" placeholder="Поиск..."><button type="submit">Найти</button>
+            </form>
+        </header>
+        
+        <nav>
+            <ul class="top-menu">
+                <li>
+                    <a asp-area="" asp-controller="Home"
+                       asp-action="Index">ГЛАВНАЯ</a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Home"
+                       asp-action="AboutUs">О НАС</a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Home"
+                       asp-action="ListServices">УСЛУГИ</a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Home"
+                       asp-action="Contacts">КОНТАКТЫ</a>
+                </li>
+                <li name="entrance">
+                    <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button id="logout" type="submit" class="nav-link btn btn-link text-dark">ВЫЙТИ</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+        <div id="heading">
+            <h4>Туристическое агенство "Родина"</h4>
+        </div>
+        <aside>
+            <nav>
+                <ul class="aside-menu">
+                    <li><a asp-area="" asp-controller="Tour" asp-action="Index">Туры</a></li>
+                    <li><a asp-area="" asp-controller="Hotel" asp-action="Index">Отели</a></li>
+                    <li>
+                        Справочники
+                        <ul class="sub-menu" style="display: none;">
+                            <li>
+                                <a asp-area="" asp-controller="City" asp-action="Index">
+                                    Населенные пункты
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-area="" asp-controller="HotelStarRating" asp-action="Index">
+                                    Звездный рейтинг отеля
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-area="" asp-controller="MealType" asp-action="Index">
+                                    Тип питания
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-area="" asp-controller="HotelFacility" asp-action="Index">
+                                    Услуги отеля
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-area="" asp-controller="RoomAmenity" asp-action="Index">
+                                    Оснащение номера
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-area="" asp-controller="TravelService" asp-action="Index">
+                                    Услуги турагенства
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        <li><a asp-area="" asp-controller="Requests" asp-action="Index">Заявки</a></li>
+                    }
+                      
+                    <li><a asp-area="" asp-controller="Analytics" asp-action="Index">Аналитика</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <section class="bottom-element">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </section>
+    </div>
+    
+    <footer>
+        <div id="footer">
+            <div id="twitter">
+                <h3>Новости</h3>
+                <time datetime="@DateTime.Now.Date.ToString()">@DateTime.Now.ToString()</time>
+                <p>
+                    В этом месяце скидка 20% на туры в Санкт-Петербург. Что бы узнать подробности акции свяжитесть с нашим консультантом.
+                </p>
+            </div>
+            <div id="sitemap">
+                <h3>КАРТА САЙТА</h3>
+                <div>
+                    <a asp-area="" asp-controller="Home"
+                       asp-action="Index">Главная</a>
+                    <a asp-area="" asp-controller="Home"
+                       asp-action="AboutUs">О нас</a>
+                    <a asp-area="" asp-controller="Home"
+                       asp-action="ListServices">Услуги</a>
+                    <a asp-area="" asp-controller="Home"
+                       asp-action="Contacts">Контакты</a>
+                </div>
+            </div>
+            
+        </div>
+    </footer>
+
+
+                                                 @*Скрипты*@
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    
+    <script>
+        $(document).ready(function () {
+            $('.top-menu li').hover(function () {
+                $(this).css('background-color', '#29c5e6');
+            }, function () {
+                $(this).css('background-color', '');
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('.aside-menu li').hover(function () {
+                $(this).css('color', '#29c5e6');
+            }, function () {
+                $(this).css('color', '');
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('.aside-menu a').hover(function () {
+                $(this).css('color', '#29c5e6');
+            }, function () {
+                $(this).css('color', '');
+            });
+        });
+    </script>    
+    
+
+    <script>
+        $(document).ready(function () {
+            $('table:not(#requests) tr').hover(function () {
+                $(this).css('background-color', '#d4d4d4');
+            }, function () {
+                $(this).css('background-color', '');
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('li:contains("Справочники")').click(function () {
+                $(this).find('.sub-menu').toggle();
+            });
+        });
+    </script>
+
+</body>
+</html>

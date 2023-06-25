@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model IEnumerable<TravelAgency.Models.MealType>
+
+@{
+    ViewData["Title"] = "Тип питания";
+}
+
+<h3>Тип питания</h3>
+
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <p>
+        <a class="btn btn-info" asp-action="Create">Добавить</a>
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                {
+                    <div>
+                        <a asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-arrow-counterclockwise"></i></a> |
+                        <a asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i></a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash3"></i></a>
+                    </div>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
